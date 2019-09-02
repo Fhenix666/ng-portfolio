@@ -8,15 +8,28 @@ import { IInfoPage } from '../interfaces/info-page.interface';
 export class InfoPaginaService {
 
   info: IInfoPage = {};
+  team: any[] = [];
   cargada = false;
 
   constructor( private http: HttpClient ) {
+    this.loadInfoPage();
+    this.loadTeam();
+  }
+
+  private loadInfoPage() {
     this.http.get('assets/data/data-page.json').
     subscribe( (resp: IInfoPage) => {
       this.info = resp;
       this.cargada = true;
-      console.log(resp);
     });
-
   }
+
+  private loadTeam() {
+    this.http.get('https://ngportfolio-f20ef.firebaseio.com/equipo.json').
+    subscribe( (resp: any[]) => {
+      this.team = resp;
+      this.cargada = true;
+    });
+  }
+
 }
